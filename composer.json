@@ -1,0 +1,42 @@
+{
+    "name": "historian/historian",
+    "description": "An all-in-one Event Sourcing framework for PHP",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Matias Navarro Carter",
+            "email": "mnavarrocarter@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Historian\\": "src"
+        },
+        "files": [
+            "src/functions.php"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Historian\\Tests\\": "tests"
+        }
+    },
+    "minimum-stability": "stable",
+    "require": {
+        "php": ">=7.2",
+        "ext-json": "*",
+        "ext-zlib": "*",
+        "psr/http-server-middleware": "^1.0",
+        "psr/event-dispatcher": "^1.0",
+        "psr/http-server-handler": "^1.0",
+        "psr/http-factory": "^1.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^7.0",
+        "symfony/var-dumper": "^4.2",
+        "espresso/http-module": "^1.0",
+        "league/container": "^3.2",
+        "predis/predis": "^1.1"
+    }
+}
