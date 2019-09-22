@@ -2,7 +2,7 @@
 
 namespace Historian\EventSourcing;
 
-use Historian\EventStore\Event;
+use Historian\Event\Event;
 use RuntimeException;
 
 /**

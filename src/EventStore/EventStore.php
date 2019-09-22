@@ -2,12 +2,14 @@
 
 namespace Historian\EventStore;
 
+use Historian\Event\EventStream;
+
 /**
  * Interface EventStore
  *
  * Defines the contract for an Event Store.
  *
- * An Event Store saves streams of events using a persistence layer.
+ * An Event Store performs operations over streams of events.
  *
  * @author Matias Navarro Carter <mnavarro@option.cl>
  */

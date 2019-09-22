@@ -2,7 +2,7 @@
 
 namespace Historian\Projector;
 
-use Historian\EventStore\Event;
+use Historian\Event\Event;
 
 /**
  * Interface Projector

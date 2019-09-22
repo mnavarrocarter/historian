@@ -5,7 +5,7 @@ namespace Historian\EventStore\EventDispatcher;
 /**
  * Class BeforeAppendEvent
  *
- * Description of what this class does goes here.
+ * This event is fired after an event stream is persisted
  *
  * @author Matias Navarro Carter <mnavarro@option.cl>
  */

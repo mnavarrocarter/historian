@@ -2,7 +2,7 @@
 
 namespace Historian\EventStore\EventDispatcher;
 
-use Historian\EventStore\EventStream;
+use Historian\Event\EventStream;
 
 /**
  * Class StreamLoaded

@@ -8,16 +8,15 @@ use Historian\EventSourcing\EventDispatcher\EventDispatcherAggregateRepository;
 use Historian\EventSourcing\EventSourcedAggregateRepository;
 use Historian\EventStore\EventDispatcher\EventDispatcherEventStore;
 use Historian\EventStore\EventStore;
-use Historian\EventStore\Http\ListEventsHandler;
-use Historian\EventStore\Predis\PredisClientWrapper;
-use Historian\EventStore\Predis\PredisEventStore;
+use Historian\EventStore\Http\EventsHttpHandler;
+use Historian\EventStore\Predis\PredisStorageDriver;
 use Historian\Projector\ProjectorManager;
 use Historian\Projector\ProjectorTracker;
 use Historian\Projector\Predis\PredisProjectorTracker;
 use Historian\Serializer\CompressionDecorator;
 use Historian\Serializer\EventSerializer;
 use Historian\Serializer\JsonEventSerializer;
-use Historian\Util\PropertyAccessor;
+use Historian\Util\ClosurePropertyAccessor;
 use League\Container\ServiceProvider\AbstractServiceProvider;
 use Predis\Client as PredisClient;
 use Psr\EventDispatcher\EventDispatcherInterface;
@@ -55,12 +54,12 @@ class HistorianServiceProvider extends AbstractServiceProvider
     }
 
     protected $provides = [
-        ListEventsHandler::class,
+        EventsHttpHandler::class,
         EventStore::class,
         EventSerializer::class,
         AggregateRepository::class,
-        PredisClientWrapper::class,
-        PropertyAccessor::class,
+        PredisStorageDriver::class,
+        ClosurePropertyAccessor::class,
         ProjectorManager::class,
         ProjectorTracker::class
     ];
@@ -68,7 +67,7 @@ class HistorianServiceProvider extends AbstractServiceProvider
     public function register(): void
     {
         // We register the predis wrapper
-        $this->leagueContainer->share(PredisClientWrapper::class)
+        $this->leagueContainer->share(PredisStorageDriver::class)
             ->addArgument($this->options['predis_service'])
             ->addArgument($this->options['predis_key_prefix']);
 
@@ -87,10 +86,10 @@ class HistorianServiceProvider extends AbstractServiceProvider
         // Aggregate Repository
         $this->leagueContainer->share(AggregateRepository::class, EventSourcedAggregateRepository::class)
             ->addArgument(EventStore::class)
-            ->addArgument(PropertyAccessor::class);
+            ->addArgument(ClosurePropertyAccessor::class);
 
         // Property Accessor
-        $this->leagueContainer->share(PropertyAccessor::class);
+        $this->leagueContainer->share(ClosurePropertyAccessor::class);
 
         // Projector manager
         $this->leagueContainer->share(ProjectorManager::class)
@@ -102,7 +101,7 @@ class HistorianServiceProvider extends AbstractServiceProvider
             ->addArgument(PredisClient::class);
 
         // List Events Handler
-        $this->leagueContainer->share(ListEventsHandler::class)
+        $this->leagueContainer->share(EventsHttpHandler::class)
             ->addArgument(EventStore::class)
             ->addArgument($this->options['response_factory_service'])
             ->addArgument($this->options['list_events_handler']);
@@ -115,7 +114,7 @@ class HistorianServiceProvider extends AbstractServiceProvider
     {
         $repository = new EventSourcedAggregateRepository(
             $this->leagueContainer->get(EventStore::class),
-            $this->leagueContainer->get(PropertyAccessor::class)
+            $this->leagueContainer->get(ClosurePropertyAccessor::class)
         );
 
         if ($this->options['aggregate_repository_dispatch_events'] === true) {
@@ -134,7 +133,7 @@ class HistorianServiceProvider extends AbstractServiceProvider
     protected function buildEventStore(): EventStore
     {
         $eventStore = new PredisEventStore(
-            $this->leagueContainer->get(PredisClientWrapper::class),
+            $this->leagueContainer->get(PredisStorageDriver::class),
             $this->leagueContainer->get(EventSerializer::class)
         );
 

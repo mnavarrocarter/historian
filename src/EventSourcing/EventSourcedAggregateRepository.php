@@ -3,20 +3,21 @@
 namespace Historian\EventSourcing;
 
 use Closure;
+use Historian\EventSourcing\SnapshotStore\SnapshotStore;
 use Historian\EventStore\EventStore;
-use Historian\EventStore\EventStream;
+use Historian\Event\EventStream;
 use Historian\EventStore\StreamNotFoundException;
-use Historian\SnapshotStore\SnapshotStore;
 use Historian\Util\PropertyAccessor;
 
 /**
  * Class AggregateRootRepository
  *
- * This is an aggregate repository that is event sourced.
+ * This is an aggregate repository that uses an Event Store implementation to
+ * reconstitute aggregates.
  *
  * @author Matias Navarro Carter <mnavarro@option.cl>
  */
-class EventSourcedAggregateRepository implements AggregateRepository
+final class EventSourcedAggregateRepository implements AggregateRepository
 {
     /**
      * @var EventStore
@@ -83,8 +84,10 @@ class EventSourcedAggregateRepository implements AggregateRepository
 
         // If there's a snapshot store and has that aggregateId, then we fetch it.
         if ($this->snapshots instanceof SnapshotStore && $this->snapshots->has($aggregateId)) {
-            return $this->snapshots->get($aggregateId);
+            $aggregate = $this->snapshots->get($aggregateId);
         }
+
+        $version = $this->getAggregateVersion($aggregate);
 
         $events = $this->eventStore->load($aggregateId);
 
@@ -105,5 +108,13 @@ class EventSourcedAggregateRepository implements AggregateRepository
         $this->eventStore->delete(
             $this->accessor->get($aggregateRoot, 'id', AggregateRoot::class)
         );
+    }
+
+    private function getAggregateVersion(AggregateRoot $aggregate): int
+    {
+        $version = Closure::fromCallable(function () {
+            return $this->state['_version'];
+        })->bindTo($aggregate, AggregateRoot::class);
+        return $version();
     }
 }

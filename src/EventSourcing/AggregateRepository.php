@@ -3,9 +3,9 @@
 namespace Historian\EventSourcing;
 
 /**
- * Class ReadOnlyRepository
+ * Class AggregateRepository
  *
- * Description of what this class does goes here.
+ * The contract for an aggregate repository
  *
  * @author Matias Navarro Carter <mnavarro@option.cl>
  */

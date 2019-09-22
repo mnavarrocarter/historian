@@ -5,7 +5,7 @@ namespace Historian\EventStore;
 /**
  * Interface EventStoreDecorator
  *
- * This marks a decorated Event Store.
+ * This is the contract for a decorated Event Store.
  *
  * @author Matias Navarro Carter <mnavarro@option.cl>
  */

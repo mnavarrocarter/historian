@@ -9,7 +9,7 @@ use Throwable;
 /**
  * Class StreamNotFoundException
  *
- * Description of what this class does goes here.
+ * This error is thrown when a stream is not found in the Event Store.
  *
  * @author Matias Navarro Carter <mnavarro@option.cl>
  */

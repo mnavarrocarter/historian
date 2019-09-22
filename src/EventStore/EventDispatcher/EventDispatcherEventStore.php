@@ -4,18 +4,19 @@ namespace Historian\EventStore\EventDispatcher;
 
 use Historian\EventStore\EventStore;
 use Historian\EventStore\EventStoreDecorator;
-use Historian\EventStore\EventStream;
+use Historian\Event\EventStream;
 use Historian\EventStore\StreamNotFoundException;
 use Psr\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Class EventDispatcherEventStore
  *
- * This decorates an Event Store with an Event Dispatcher.
+ * This decorates an Event Store with a PSR-14 Event Dispatcher.
  *
  * This fires two events:
  *
- * -
+ * - BeforeAppendEvent
+ * - AfterAppendEvent
  *
  * @author Matias Navarro Carter <mnavarro@option.cl>
  */

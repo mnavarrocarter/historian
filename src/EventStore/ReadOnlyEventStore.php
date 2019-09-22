@@ -2,10 +2,12 @@
 
 namespace Historian\EventStore;
 
+use Historian\Event\EventStream;
+
 /**
  * Class ReadOnlyEventStore
  *
- * Description of what this class does goes here.
+ * A read-only Event Store contract.
  *
  * @author Matias Navarro Carter <mnavarro@option.cl>
  */
