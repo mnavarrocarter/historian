@@ -10,19 +10,19 @@ namespace Historian\Projector;
 interface ProjectorTracker
 {
     /**
-     * @param string $id
+     * @param string $projectorName
      * @param int $eventNumber
      */
-    public function track(string $id, int $eventNumber): void;
+    public function track(string $projectorName, int $eventNumber): void;
 
     /**
-     * @param string $id
+     * @param string $projectorName
      */
-    public function reset(string $id): void;
+    public function reset(string $projectorName): void;
 
     /**
-     * @param string $id
-     * @return int
+     * @param string $projectorName
+     * @return int|null
      */
-    public function lastTrackedEventId(string $id): int;
+    public function lastTrackedEvent(string $projectorName): ?int;
 }

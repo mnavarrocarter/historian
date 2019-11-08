@@ -31,6 +31,6 @@ final class JsonEventSerializer implements EventSerializer
     public function deserialize(string $serialized): Event
     {
         $data = json_decode($serialized, true);
-        return new Event($data['id'], $data['occurredAt'], $data['payload']);
+        return new Event($data['id'], $data['name'], $data['occurredAt'], $data['payload']);
     }
 }

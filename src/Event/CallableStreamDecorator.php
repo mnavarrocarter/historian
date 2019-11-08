@@ -12,7 +12,7 @@ use Iterator;
  *
  * @package Historian\Event
  */
-class CallableStreamDecorator implements EventStream
+final class CallableStreamDecorator implements EventStream
 {
     /**
      * @var EventStream

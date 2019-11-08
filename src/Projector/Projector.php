@@ -2,26 +2,28 @@
 
 namespace Historian\Projector;
 
-use Historian\Event\Event;
+use Historian\EventStore\EventStore;
 
 /**
  * Interface Projector
- *
- * A projector that can be run every x seconds or time.
- *
- * If passed an implementation of PersistentState, can project
- * only the events that has not processed.
  *
  * @author Matias Navarro Carter <mnavarro@option.cl>
  */
 interface Projector
 {
     /**
-     * Projects an event.
+     * Returns the projector name
      *
-     * @param Event $event
-     * @throws ProjectionFailedException when projection fails for some reason
+     * @return string
+     */
+    public function getName(): string;
+
+    /**
+     * Process the events in a projector
+     *
+     * @param EventStore $eventStore
+     * @param ProjectorTracker $tracker
      * @return void
      */
-    public function project(Event $event): void;
+    public function process(EventStore $eventStore, ProjectorTracker $tracker): void;
 }

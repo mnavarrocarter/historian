@@ -17,5 +17,6 @@ composer require historian/historian
 Each component has it's own documentation:
 - Event
 - EventStore
+- HttpEventStore
 - EventSourcing
 - Projector

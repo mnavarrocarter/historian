@@ -29,10 +29,11 @@ final class InMemoryEventStream implements EventStream
 
     /**
      * InMemoryEventStream constructor.
+     * @param Event[] $events
      */
-    public function __construct()
+    public function __construct(Event ...$events)
     {
-        $this->events = [];
+        $this->events = $events;
     }
 
     /**

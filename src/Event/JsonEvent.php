@@ -6,7 +6,8 @@ namespace Historian\Event;
 use JsonSerializable;
 
 /**
- * Class JsonEvent
+ * Decorates an event to make it json-serializable.
+ *
  * @package Historian\Event
  */
 class JsonEvent implements JsonSerializable
@@ -32,6 +33,7 @@ class JsonEvent implements JsonSerializable
     {
         return [
             'id' => $this->event->eventId(),
+            'name' => $this->event->eventName(),
             'payload' => $this->event->payload(),
             'occurredAt' => $this->event->occurredAt()
         ];

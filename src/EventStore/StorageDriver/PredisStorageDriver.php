@@ -1,8 +1,7 @@
 <?php
 
-namespace Historian\EventStore\Predis;
+namespace Historian\EventStore\StorageDriver;
 
-use Historian\EventStore\StorageDriver\StorageDriver;
 use Iterator;
 use Predis\Client;
 
@@ -43,7 +42,7 @@ final class PredisStorageDriver implements StorageDriver
      */
     public function streamExists(string $streamName): bool
     {
-        return (bool)$this->client->exists($this->streamListKey($streamName));
+        return (bool) $this->client->exists($this->streamListKey($streamName));
     }
 
     /**
@@ -117,7 +116,7 @@ final class PredisStorageDriver implements StorageDriver
             '%s:%s:%s',
             $this->appName,
             'Streams',
-            substr(sha1($listName), 0, 8)
+            substr(sha1($listName), 0, 10)
         );
     }
 
@@ -131,7 +130,7 @@ final class PredisStorageDriver implements StorageDriver
             '%s:%s:%s',
             $this->appName,
             'Events',
-            substr(sha1($eventId), 0, 4)
+            substr(sha1($eventId), 0, 8)
         );
     }
 }

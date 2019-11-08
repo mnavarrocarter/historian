@@ -9,7 +9,7 @@ use function Historian\uuid4;
  *
  * This class models a Domain Event.
  *
- * Events contain a payload, and always have a unique id and a creation time.
+ * Events contain a payload, and always have a name, a unique id and a creation time.
  *
  * @author Matias Navarro Carter <mnavarro@option.cl>
  */
@@ -20,6 +20,11 @@ class Event
      * @var string
      */
     protected $eventId;
+    /**
+     * The name of the event
+     * @var string
+     */
+    protected $eventName;
     /**
      * The payload of the event
      * @var array
@@ -38,20 +43,20 @@ class Event
      */
     public static function named(string $eventName): Event
     {
-        $event = new self(uuid4(), time());
-        $event->payload['_eventName'] = $eventName;
-        return $event;
+        return new self(uuid4(), $eventName, time());
     }
 
     /**
      * Event constructor.
      * @param string $eventId
+     * @param string $eventName
      * @param int $occurredAt
      * @param array $payload
      */
-    public function __construct(string $eventId, int $occurredAt, array $payload = [])
+    public function __construct(string $eventId, string $eventName, int $occurredAt, array $payload = [])
     {
         $this->eventId = $eventId;
+        $this->eventName = $eventName;
         $this->occurredAt = $occurredAt;
         $this->payload = $payload;
     }
@@ -95,6 +100,11 @@ class Event
     public function eventId(): string
     {
         return $this->eventId;
+    }
+
+    public function eventName(): string
+    {
+        return $this->eventName;
     }
 
     public function payload(): array

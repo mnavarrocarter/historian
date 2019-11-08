@@ -9,10 +9,9 @@ use Historian\Event\Event;
  *
  * The base contract for an StreamExtractor.
  *
- * The idea behind a extractor is that, before persistence,
- * it receives the event and has the chance to return an
- * array of stream names out of it. The event will be appended
- * to those streams when persisted.
+ * The idea behind a extractor is that, before persistence, it receives the event and has the chance
+ * to return an array of stream names out of it. The event will be appended to those streams
+ * when persisted.
  *
  * @author Matias Navarro Carter <mnavarro@option.cl>
  */

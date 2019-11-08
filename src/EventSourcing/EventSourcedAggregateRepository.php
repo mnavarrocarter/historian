@@ -2,6 +2,7 @@
 
 namespace Historian\EventSourcing;
 
+use Cassandra\Aggregate;
 use Closure;
 use Historian\EventSourcing\SnapshotStore\SnapshotStore;
 use Historian\EventStore\EventStore;
@@ -81,22 +82,20 @@ final class EventSourcedAggregateRepository implements AggregateRepository
         if (!$this->eventStore->hasStream($aggregateId)) {
             return null;
         }
-
+        $aggregate = null;
         // If there's a snapshot store and has that aggregateId, then we fetch it.
         if ($this->snapshots instanceof SnapshotStore && $this->snapshots->has($aggregateId)) {
             $aggregate = $this->snapshots->get($aggregateId);
         }
 
-        $version = $this->getAggregateVersion($aggregate);
-
         $events = $this->eventStore->load($aggregateId);
 
-        $recreate = Closure::bind(static function (EventStream $events) {
+        $recreate = Closure::bind(static function (EventStream $events, AggregateRoot $aggregateRoot = null) {
             /** @noinspection PhpUndefinedMethodInspection */
-            return self::reconstituteFromHistory($events);
+            return self::reconstituteFromHistory($events, $aggregateRoot);
         }, null, AggregateRoot::class);
 
-        return $recreate($events);
+        return $recreate($events, $aggregate);
     }
 
     /**
@@ -108,13 +107,5 @@ final class EventSourcedAggregateRepository implements AggregateRepository
         $this->eventStore->delete(
             $this->accessor->get($aggregateRoot, 'id', AggregateRoot::class)
         );
-    }
-
-    private function getAggregateVersion(AggregateRoot $aggregate): int
-    {
-        $version = Closure::fromCallable(function () {
-            return $this->state['_version'];
-        })->bindTo($aggregate, AggregateRoot::class);
-        return $version();
     }
 }

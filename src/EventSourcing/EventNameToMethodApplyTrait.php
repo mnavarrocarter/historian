@@ -15,6 +15,9 @@ use RuntimeException;
  * be executed.
  *
  * @author Matias Navarro Carter <mnavarro@option.cl>
+ *
+ * @property int version
+ * @property int lastModified
  */
 trait EventNameToMethodApplyTrait
 {
@@ -24,18 +27,20 @@ trait EventNameToMethodApplyTrait
      */
     protected function apply(Event $event): void
     {
-        $methodName = $this->toCamelCase($event->get('_eventName'));
+        $methodName = $this->createMethodName($event->eventName());
         if (!method_exists($this, $methodName)) {
             throw new RuntimeException(sprintf(
-                'Class must have a method called "%s" to apply the "%s" event.',
+                'Class must have a method called "%s" in order to apply the "%s" event to it.',
                 $methodName,
                 $event->get('_eventName')
             ));
         }
         $this->{$methodName}($event);
+        $this->version++;
+        $this->lastModified = time();
     }
 
-    private function toCamelCase(string $string): string
+    private function createMethodName(string $string): string
     {
         return 'apply'.str_replace([' ', '_', '-'], '', ucwords($string, ' _-'));
     }

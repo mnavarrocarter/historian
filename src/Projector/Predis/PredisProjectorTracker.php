@@ -55,7 +55,7 @@ class PredisProjectorTracker implements ProjectorTracker
      * @param string $id
      * @return int
      */
-    public function lastTrackedEventId(string $id): int
+    public function lastTrackedEvent(string $id): int
     {
         $eventId = $this->client->get($this->key($id));
         if ($eventId === '') {
@@ -66,10 +66,6 @@ class PredisProjectorTracker implements ProjectorTracker
 
     private function key(string $id): string
     {
-        return sprintf(
-            '%s:%s',
-            $this->baseName,
-            sha1($id)
-        );
+        return sprintf('%s:%s', $this->baseName, sha1($id));
     }
 }

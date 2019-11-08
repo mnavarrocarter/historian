@@ -8,7 +8,7 @@ use Historian\Event\Event;
 /**
  * Class PhpEventSerializer
  *
- * Serializes events using PHP's native serialization format
+ * Serializes events using PHP's native serialization function and format
  *
  * @package Historian\EventStore\EventSerializer
  */

@@ -7,8 +7,6 @@ use DateTimeInterface;
 use Iterator;
 
 /**
- * Class UntilStreamDecorator
- *
  * Decorates an Event Stream to stop iteration when a certain date is reached.
  *
  * @package Historian\Event

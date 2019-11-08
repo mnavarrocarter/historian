@@ -7,8 +7,6 @@ use Iterator;
 use IteratorAggregate;
 
 /**
- * Interface EventIterator
- *
  * The contract to implement an iterable collection of events.
  *
  * @author Matias Navarro Carter <mnavarro@option.cl>
