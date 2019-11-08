@@ -15,10 +15,6 @@ final class EventNameStreamExtractor implements StreamExtractor
 {
     public function extractFrom(Event $event): array
     {
-        $streams = [];
-        if ($event->has('_eventName')) {
-            $streams[] = $event->get('_eventName');
-        }
-        return $streams;
+        return [$event->eventName()];
     }
 }
