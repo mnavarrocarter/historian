@@ -53,13 +53,13 @@ class PredisProjectorTracker implements ProjectorTracker
 
     /**
      * @param string $id
-     * @return int
+     * @return int|null
      */
-    public function lastTrackedEvent(string $id): int
+    public function lastTrackedEvent(string $id): ?int
     {
         $eventId = $this->client->get($this->key($id));
         if ($eventId === '') {
-            return 0;
+            return null;
         }
         return (int) $eventId;
     }
