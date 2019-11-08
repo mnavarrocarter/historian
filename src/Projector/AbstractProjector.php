@@ -35,13 +35,7 @@ abstract class AbstractProjector implements Projector
         $name = $this->getName();
         $stream = $eventStore->load($this->getStream());
 
-        $lastTracked = $tracker->lastTrackedEvent($name);
-        if ($lastTracked !== null) {
-            $start = $lastTracked +1;
-        } else {
-            $start = 0;
-        }
-
+        $start = $tracker->lastTrackedEvent($name) + 1;
         $stream->start($start);
 
         foreach ($stream as $event) {
